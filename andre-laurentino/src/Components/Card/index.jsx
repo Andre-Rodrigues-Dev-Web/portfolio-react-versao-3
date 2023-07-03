@@ -14,9 +14,10 @@ const NewsCard = ({ titulo, descricao, imagem, data, slug, categoria }) => {
       <ImageCard src="https://i.pinimg.com/originals/eb/18/d0/eb18d0e85491c5639803417ccebc2ec0.png"/>
       <ContentCard>
         <Title>{titulo}</Title>
-        <DataCard>{data}</DataCard>
+        <DataCard>Data de publicação: {data}</DataCard>
+        <DataCard>Categoria: {categoria}</DataCard>
         <Description>{descricao}</Description>
-        <ReadMoreLink to={slug}>Read More</ReadMoreLink>
+        <ReadMoreLink to={slug}>Confira o artigo</ReadMoreLink>
       </ContentCard>
     </CardContainer>
   );

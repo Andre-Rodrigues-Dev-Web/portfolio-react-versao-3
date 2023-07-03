@@ -13,18 +13,16 @@ const Blog = () => {
     return description;
   };
 
-  // Função para buscar os dados da API
   const fetchPosts = async () => {
     try {
-      const response = await fetch('http://localhost/www/api-meu-blog/api/listanoticias'); // Substitua 'URL_DA_API_PHP' pela URL da sua API PHP
+      const response = await fetch('http://localhost/www/api-meu-blog/api/listanoticias'); 
       const data = await response.json();
-      setPosts(data); // Atualiza o estado 'posts' com os dados recebidos da API
+      setPosts(data);
     } catch (error) {
       console.error('Erro ao obter os dados da API:', error);
     }
   };
 
-  // Chamada para buscar os dados da API quando o componente for montado
   useEffect(() => {
     fetchPosts();
   }, []);
@@ -36,12 +34,12 @@ const Blog = () => {
           {posts.map((post, index) => (
             <Col lg={6} md={6} sm={12} xs key={index}>
               <NewsCard
-                title={post.titulo}
-                description={truncateDescription(post.descricao)}
-                image={post.imagem}
-                date={post.data}
+                titulo={post.titulo}
+                descricao={truncateDescription(post.descricao)}
+                imagem={post.imagem}
+                data={post.data}
                 slug={post.slug} 
-                category={post.categoria}
+                categoria={post.categoria}
               />
             </Col>
           ))}
