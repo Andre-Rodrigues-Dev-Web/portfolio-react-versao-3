@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Col, Row } from 'react-bootstrap';
 import NewsCard from '../../Components/Card';
+import axios from 'axios';
 
 const Blog = () => {
   const maxDescriptionLength = 180;
-  const [posts, setPosts] = useState([]);
+  const [noticias, setNoticias] = useState([]);
 
   const truncateDescription = (description) => {
     if (description.length > maxDescriptionLength) {
@@ -13,33 +14,25 @@ const Blog = () => {
     return description;
   };
 
-  const fetchPosts = async () => {
-    try {
-      const response = await fetch('http://localhost/www/api-meu-blog/api/listanoticias'); 
-      const data = await response.json();
-      setPosts(data);
-    } catch (error) {
-      console.error('Erro ao obter os dados da API:', error);
-    }
-  };
-
   useEffect(() => {
-    fetchPosts();
+    axios.get('http://localhost/www/api-meu-blog/api/listanoticias')
+      .then(response => setNoticias(response.data))
+      .catch(error => console.error(error));
   }, []);
 
   return (
     <section>
       <Container>
         <Row>
-          {posts.map((post, index) => (
+          {noticias.map((noticia, index) => ( // <-- Added 'index' here
             <Col lg={6} md={6} sm={12} xs key={index}>
               <NewsCard
-                titulo={post.titulo}
-                descricao={truncateDescription(post.descricao)}
-                imagem={post.imagem}
-                data={post.data}
-                slug={post.slug} 
-                categoria={post.categoria}
+                titulo={noticia.titulo}
+                descricao={truncateDescription(noticia.descricao)}
+                imagem={noticia.imagem}
+                data={noticia.data}
+                slug={noticia.slug} 
+                categoria={noticia.categoria}
               />
             </Col>
           ))}

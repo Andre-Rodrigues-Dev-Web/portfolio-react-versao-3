@@ -1,35 +1,44 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Col, Row } from 'react-bootstrap';
+import { Container, Col, Row, Image } from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
-const Post = (props) => {
+const Post = () => {
+  const { slug } = useParams();
+  const [noticia, setNoticia] = useState(null);
 
-    const [data, setData] = useState([]);
+  useEffect(() => {
+    const headers = {
+      'Access-Control-Allow-Origin': '*', 
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS', 
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization', 
+    };
 
-    const [slug] = useState(props.match.params.slug);
+    axios.get(`http://localhost/www/api-meu-blog/api/listanoticias/${slug}`, { headers })
+      .then(response => setNoticia(response.data))
+      .catch(error => console.error(error));
+  }, [slug]);
 
-    useEffect(() => {
-        const getProduto = async () => {
-            await fetch("http://localhost/www/api-meu-blog/api/listanoticias?slug=" + slug)
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    console.log(responseJson);
-                    setData(responseJson.produto);
-                });
-        }
-        getProduto();
-    }, [slug]);
-    return (
-        <section>
-            <Container>
-                <Row>
-                    <Col>
-                        <h2>{data.titulo}</h2>
-                        <p>{data.descricao}</p>
-                    </Col>
-                </Row>
-            </Container>
-        </section>
-    );
-}
+  if (!noticia) {
+    return <div>Loading...</div>;
+  }
+
+  const { titulo, imagem, data, descricao } = noticia;
+
+  return (
+    <section>
+      <Container>
+        <Row>
+          <Col>
+            <Image src={imagem} alt={titulo} />
+            <h2>{titulo}</h2>
+            <p>Date: {data}</p>
+            <p>{descricao}</p>
+          </Col>
+        </Row>
+      </Container>
+    </section>
+  );
+};
 
 export default Post;

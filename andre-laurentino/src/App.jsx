@@ -11,7 +11,7 @@ export default function App() {
       <BrowserRouter>
         <Menu/>
         <Routes>
-          <Route path="/" element={<Home/>}/>
+          <Route path="/" index element={<Home/>}/>
           <Route path="/blog" element={<Blog/>}/>
           <Route path="/post/:slug" element={<Post/>}/> 
         </Routes>
